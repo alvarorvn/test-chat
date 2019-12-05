@@ -36,11 +36,14 @@
             <div id="typing"></div>
         </div>
 
+        <input type="file" id="file" style="z-index: 99; position: fixed;bottom: 0px; margin-bottom: 60px;">
         <input class="textarea" type="text" placeholder="Di hola!" id="message" />
         <button class="btn-send" id="btnSend" type="button">Enviar</button>
 
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="chat.js"></script>
 </body>

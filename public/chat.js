@@ -10,6 +10,7 @@ let btn_regresar = document.getElementById('btnRegresar');
 let message = document.getElementById('message');
 let outputMyMessage = document.getElementById('MessageOutput');
 let escribiendo = document.getElementById('typing');
+let files = document.getElementById('file');
 
 btn_acceder.addEventListener('click', function () {
     if (input_nickname.value == '') {
@@ -64,6 +65,24 @@ document.body.addEventListener('keypress', function () {
     }
 })
 
+$('#file').bind('change', function (e) {
+    var data = e.originalEvent.target.files[0];
+    readThenSendFile(data)
+});
+
+function readThenSendFile(data) {
+
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        var msg = {};
+        msg.username = nickname;
+        msg.file = evt.target.result;
+        msg.fileName = data.name;
+        socket.emit('base64 file', msg);
+    };
+    reader.readAsDataURL(data);
+}
+
 socket.on('chat:return', function (data) {
     outputMyMessage.innerHTML += `
         <p id="msg"> 
@@ -79,5 +98,32 @@ socket.on('chat:typing-return', (user) => {
     <img src="./img/escribiendo.gif" width="50" height="50"> <em>${user}</em> esta escribiendo ...
     </p>
     `
+})
+
+socket.on('base64 file', function (msg) {
+    console.log(msg);
+
+    var ispngimage = msg.file.includes("data:image/png;base64,");
+    var isjpegimage = msg.file.includes("data:image/jpeg;base64,");
+    var isjpgimage = msg.file.includes("data:image/jpg;base64,");
+    var isgifimage = msg.file.includes("data:image/gif;base64,");
+
+    if (ispngimage == true || isjpegimage == true || isjpgimage == true || isgifimage) {
+        outputMyMessage.innerHTML += `
+        <p id="msg"> 
+            <strong>${msg.username}</strong>: <img src="${msg.file}" width="150" height="150"/>      
+        </p>
+    `
+    } else {
+        outputMyMessage.innerHTML += `
+        <p id="msg">  
+        <strong>${msg.username}</strong>: <a href="${msg.file}">${msg.fileName}</a>     
+        </p>
+    `
+    }
+
+
+
+    escribiendo.innerHTML = '';
 })
 
