@@ -9,6 +9,7 @@ let menu = document.getElementById('menu');
 let btn_regresar = document.getElementById('btnRegresar');
 let message = document.getElementById('message');
 let outputMyMessage = document.getElementById('MessageOutput');
+let escribiendo = document.getElementById('typing');
 
 btn_acceder.addEventListener('click', function () {
     if (input_nickname.value == '') {
@@ -43,7 +44,6 @@ document.body.addEventListener('click', function (event) {
             username: nickname,
             message: message.value
         })
-
         message.value = '';
     }
 
@@ -58,11 +58,26 @@ document.body.addEventListener('click', function (event) {
     }
 });
 
+document.body.addEventListener('keypress', function () {
+    if (event.srcElement.id == 'message') {
+        socket.emit('chat:typing', nickname);
+    }
+})
+
 socket.on('chat:return', function (data) {
     outputMyMessage.innerHTML += `
         <p id="msg"> 
             <strong>${data.username}</strong>: ${data.message}            
         </p>
+    `
+
+    escribiendo.innerHTML = '';
+})
+
+socket.on('chat:typing-return', (user) => {
+    escribiendo.innerHTML = `<p>
+    <img src="./img/escribiendo.gif" width="50" height="50"> <em>${user}</em> esta escribiendo ...
+    </p>
     `
 })
 
