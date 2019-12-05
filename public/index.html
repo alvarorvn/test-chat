@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>MULTI CHAT</title>
+</head>
+
+<body>
+    <div id="login" style="display: block;">
+        <div class="wrapper">
+            <form class="form-signin">
+                <h2 class="form-signin-heading">Ingresa un nickname</h2>
+                <input class="input-text" type="text" placeholder="Ingresa nickname" id="nickname">
+                <button class="btn btn-style" id="btnAcceder" type="button">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="chat" style="display: none;">
+        <div class="menu" id="menu">
+            <button class="back" id="btnRegresar" type="button">Regresar</button>
+            <img class="img-user" src="/img/char-face.jpg" draggable="false" />
+        </div>
+
+        <div class="chat">
+            <div id="MessageOutput" class="msg">
+
+            </div>
+        </div>
+
+        <input class="textarea" type="text" placeholder="Di hola!" id="message" />
+        <button class="btn-send" id="btnSend" type="button">Enviar</button>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
+</body>
+
+</html>
